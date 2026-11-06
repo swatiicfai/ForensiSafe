@@ -1,0 +1,17 @@
+# Hardened Disposable Detonation Image
+FROM alpine:3.20
+
+# Install minimal inspection runtimes
+RUN apk add --no-cache python3 py3-pip bash file binutils
+
+# Create an unprivileged user for detonation
+RUN addgroup -S detonator && adduser -S detonator -G detonator
+
+# Ensure root filesystem is read-only when spawned
+WORKDIR /workspace
+RUN chown -R detonator:detonator /workspace
+
+USER detonator
+
+# Default invocation runs unprivileged
+CMD ["python3", "-c", "print('ForensiSafe disposable container initialized.')"]

@@ -1,0 +1,25 @@
+version: "3.8"
+
+services:
+  forensisafe-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: forensisafe-web
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - VULTR_API_KEY=${VULTR_API_KEY}
+      - VULTR_BASE_URL=https://api.vultrinference.com/v1
+      - VULTR_MODEL=llama-3.1-70b-instruct
+      - VULTR_REGION=ewr
+      - NODE_ENV=production
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - forensisafe-net
+
+networks:
+  forensisafe-net:
+    driver: bridge
